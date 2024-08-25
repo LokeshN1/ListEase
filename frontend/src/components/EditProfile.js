@@ -19,7 +19,7 @@ function EditProfile() {
     linkedInProfile: '',
     website: '',
   });
-  const [profileImage, setProfileImage] = useState(null);
+  const [, setProfileImage] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {

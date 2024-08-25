@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaRocket } from 'react-icons/fa';
 import styled from 'styled-components';
 
 const HeroContainer = styled(motion.section)`
@@ -27,11 +26,6 @@ const HeroText = styled.p`
   margin: 0 auto;
 `;
 
-const HeroIcon = styled.div`
-  font-size: 5rem;
-  color: #ffffff;
-  margin-top: 20px;
-`;
 
 const HeroSection = () => {
   return (
