@@ -6,9 +6,10 @@ const path = require('path');
 dotenv.config();
 
 // Load models
-const ListItem = require('../models/ListItem');
-const User = require('../models/User');
-const List = require('../models/List');
+require(path.join(__dirname, '..', 'models', 'List'));
+require(path.join(__dirname, '..', 'models', 'listItem'));
+require(path.join(__dirname, '..', 'models', 'User'));
+
 
 
 const connectDB = async () => {
