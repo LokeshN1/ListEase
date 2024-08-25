@@ -18,7 +18,7 @@ const app = express();
 
 // CORS configuration
 const corsOptions = {
-    origin: 'http://localhost:3000',  // Replace with your frontend URL
+    origin: `${process.env.REACT_APP_FRONTEND_URL}`,  // Replace with your frontend URL
     credentials: true,  // Enable cookies to be sent across domains
 };
 
