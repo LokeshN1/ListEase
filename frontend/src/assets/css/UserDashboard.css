@@ -1,0 +1,51 @@
+/* UserDashboard.css */
+
+.dashboard-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .dashboard-container h1 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .user-info {
+    text-align: left;
+  }
+  
+  .user-info p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+  }
+  
+  .user-info strong {
+    color: #333;
+  }
+  
+  .profile-picture {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+  }
+  
+  .signout-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  
+  .signout-button:hover {
+    background-color: darkred;
+  }

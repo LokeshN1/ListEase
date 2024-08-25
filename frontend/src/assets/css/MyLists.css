@@ -1,0 +1,75 @@
+.my-lists-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .my-lists-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .create-new-list-button {
+    display: block;
+    margin: 0 auto 20px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  .create-new-list-button:hover {
+    background-color: #218838;
+  }
+  
+  .list-container {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .list-item {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .list-link {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 1.2em;
+  }
+  
+  .list-link:hover {
+    text-decoration: underline;
+  }
+  
+  .list-id-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+  .copy-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .copy-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .list-dates {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #555;
+  }
+  

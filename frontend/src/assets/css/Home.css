@@ -1,0 +1,153 @@
+Home.css
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #FFFFFF; /* Main background color */
+  color: #111827; /* Dark grey text color */
+}
+
+.home-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+}
+
+.hero-section {
+  background: linear-gradient(to right, #1F2937, #111827);
+  color: #FFFFFF;
+  padding: 40px 20px;
+  margin-bottom: 40px;
+  width: 100%;
+  max-width: 800px;
+  border-radius: 8px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.home-title {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.home-subtitle {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.home-input-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.home-input {
+  padding: 10px;
+  font-size: 16px;
+  margin-right: 10px;
+  border: 1px solid #D1D5DB;
+  border-radius: 4px;
+}
+
+.home-search-button {
+  padding: 10px 20px;
+  background-color: #000000;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.home-search-button:hover {
+  background-color: #333333;
+}
+
+.home-auth-buttons {
+  margin-top: 20px;
+}
+
+.home-my-lists-button,
+.home-signin-button,
+.home-signup-button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  background-color: #1F2937;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.home-my-lists-button:hover,
+.home-signin-button:hover,
+.home-signup-button:hover {
+  background-color: #111827;
+}
+
+.features-section, .testimonials-section {
+  margin: 40px 0;
+  width: 100%;
+  max-width: 800px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.features {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.feature {
+  width: 30%;
+  min-width: 200px;
+  margin: 10px 0;
+  background-color: #D1D5DB; /* Accent color for feature boxes */
+  padding: 20px;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.feature:hover {
+  transform: scale(1.05);
+}
+
+.testimonials {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.testimonial {
+  background-color: #D1D5DB; /* Accent color for testimonials */
+  color: #111827;
+  padding: 20px;
+  margin: 10px 0;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  transition: transform 0.3s ease;
+}
+
+.testimonial:hover {
+  transform: scale(1.05);
+}
+
+.footer {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #1F2937; /* Secondary color for footer */
+  color: #FFFFFF;
+  width: 100%;
+  text-align: center;
+  border-radius: 8px;
+}

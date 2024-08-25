@@ -1,0 +1,79 @@
+.list-interface-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .list-interface-table th,
+  .list-interface-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .list-interface-table th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .list-interface-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .list-interface-table tr:hover {
+    background-color: #ddd;
+  }
+  
+  .list-interface-container {
+    margin: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .list-interface-title {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .list-interface-about {
+    margin-bottom: 20px;
+    color: #666;
+  }
+  
+  .list-interface-search-container {
+    margin-bottom: 20px;
+  }
+  
+  .list-interface-search-input {
+    padding: 10px;
+    width: 300px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+  }
+  
+  .list-interface-search-button {
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .list-interface-search-button:hover {
+    background-color: #45a049;
+  }
+  
+  .list-interface-result {
+    margin-top: 20px;
+  }
+  
+
+  
