@@ -13,7 +13,7 @@ function UserDashboard() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/users/profile`, {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {
           withCredentials: true,
         });
         setUserData(response.data);
@@ -28,7 +28,7 @@ function UserDashboard() {
 
   const handleSignout = async () => {
     try {
-      await axios.post(`${process.env.REACT_APP_BASE_URL}/api/users/signout`, {}, {
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/users/signout`, {}, {
         withCredentials: true,
       });
       window.location.href = '/';
@@ -74,8 +74,8 @@ function UserDashboard() {
           <div className="flex items-center">
             <img
               src={userData.profilePicture ? 
-                `${process.env.REACT_APP_BASE_URL}/${userData.profilePicture}` : 
-                `${process.env.REACT_APP_BASE_URL}/uploads/profile-pictures/default-profile.png`}
+                `${process.env.REACT_APP_BACKEND_URL}/${userData.profilePicture}` : 
+                `${process.env.REACT_APP_BACKEND_URL}/uploads/profile-pictures/default-profile.png`}
               alt="Profile"
               className="w-16 h-16 rounded-full object-cover"
             />

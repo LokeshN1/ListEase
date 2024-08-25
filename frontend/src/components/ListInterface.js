@@ -10,7 +10,7 @@ function ListInterface() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_BASE_URL}/api/lists/${listId}`)
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/lists/${listId}`)
       .then(response => {
         setListData(response.data);
         setError('');
@@ -25,7 +25,7 @@ function ListInterface() {
       try {
         const queryColumn = listData.queryColumn; // assuming `queryColumn` is available in listData
         const response = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}/api/lists/data/${listId}/query`,
+          `${process.env.REACT_APP_BACKEND_URL}/api/lists/data/${listId}/query`,
           {
             params: {
               queryColumn: queryColumn,

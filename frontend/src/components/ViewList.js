@@ -13,7 +13,7 @@ function ViewList() {
   useEffect(() => {
     const fetchListDetails = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/lists/${id}`, {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/lists/${id}`, {
           withCredentials: true,
         });
         setList(response.data);
@@ -24,7 +24,7 @@ function ViewList() {
 
     const fetchListData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/lists/data/${id}`, {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/lists/data/${id}`, {
           withCredentials: true,
         });
         setRows(response.data.data || []);

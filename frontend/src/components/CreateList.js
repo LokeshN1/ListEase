@@ -74,7 +74,7 @@ function CreateList() {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/lists/excel-extract-column`, formData, {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/lists/excel-extract-column`, formData, {
         withCredentials: true,
       });
 
@@ -91,7 +91,7 @@ function CreateList() {
 
     try {
       await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/api/lists/create-list-excel`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/lists/create-list-excel`,
         {
           title,
           heading,
@@ -115,7 +115,7 @@ function CreateList() {
 
     try {
       await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/api/lists/manual`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/lists/manual`,
         {
           title,
           heading,

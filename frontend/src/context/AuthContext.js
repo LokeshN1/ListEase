@@ -22,12 +22,12 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const authResponse = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/auth/check-auth`, {
+        const authResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/auth/check-auth`, {
           withCredentials: true,
         });
 
         if (authResponse.data.authenticated) {
-          const profileResponse = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/users/profile`, {
+          const profileResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {
             withCredentials: true,
           });
           // Destructure the user details from the response

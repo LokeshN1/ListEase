@@ -14,7 +14,7 @@ function EditList() {
   useEffect(() => {
     const fetchListDetails = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/lists/${id}`, {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/lists/${id}`, {
           withCredentials: true,
         });
         setList(response.data);
@@ -25,7 +25,7 @@ function EditList() {
 
     const fetchListData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/lists/data/${id}`, {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/lists/data/${id}`, {
           withCredentials: true,
         });
         setRows(response.data.data || []);
@@ -46,7 +46,7 @@ function EditList() {
 
   const handleAddRow = async () => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/lists/add-data/${id}`, {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/lists/add-data/${id}`, {
         data: [newRow],
       }, {
         withCredentials: true,
@@ -66,7 +66,7 @@ function EditList() {
 
   const handleDeleteRow = async (rowIndex) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/lists/delete-row/${id}/${rowIndex}`, {
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/lists/delete-row/${id}/${rowIndex}`, {
         withCredentials: true,
       });
       const updatedRows = rows.filter((_, i) => i !== rowIndex);
@@ -85,7 +85,7 @@ function EditList() {
   const handleSaveRow = async (rowIndex) => {
     try {
       const updatedRow = rows[rowIndex];
-      await axios.put(`${process.env.REACT_APP_BASE_URL}/api/lists/update-row/${id}/${rowIndex}`, {
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/lists/update-row/${id}/${rowIndex}`, {
         updatedRow,
       }, {
         withCredentials: true,
@@ -103,7 +103,7 @@ function EditList() {
 
   const handleSave = async () => {
     try {
-      await axios.put(`${process.env.REACT_APP_BASE_URL}/api/lists/${id}`, {
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/lists/${id}`, {
         ...list,
         data: rows,
       }, {

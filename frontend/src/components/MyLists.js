@@ -17,7 +17,7 @@ function MyLists() {
   useEffect(() => {
     const fetchLists = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/lists`, {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/lists`, {
           withCredentials: true,
         });
         setLists(response.data);
@@ -58,7 +58,7 @@ function MyLists() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/lists/${listToDelete}`, {
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/lists/${listToDelete}`, {
         withCredentials: true,
       });
       setLists(lists.filter((list) => list._id !== listToDelete));

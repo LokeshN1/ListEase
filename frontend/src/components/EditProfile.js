@@ -25,7 +25,7 @@ function EditProfile() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/users/profile`, {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {
           withCredentials: true,
         });
         setUserData(response.data);
@@ -69,7 +69,7 @@ function EditProfile() {
 
   const handleRemovePicture = async () => {
     try {
-      await axios.put(`${process.env.REACT_APP_BASE_URL}/api/users/account/profile`, {
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/users/account/profile`, {
         removeProfilePicture: 'true',
       }, {
         withCredentials: true,
@@ -102,7 +102,7 @@ function EditProfile() {
     }
 
     try {
-      await axios.put(`${process.env.REACT_APP_BASE_URL}/api/users/account/profile`, data, {
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/users/account/profile`, data, {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -144,8 +144,8 @@ function EditProfile() {
               <div className="relative group">
               <img
               src={userData.profilePicture ? 
-                `${process.env.REACT_APP_BASE_URL}/${userData.profilePicture}` : 
-                `${process.env.REACT_APP_BASE_URL}/uploads/profile-pictures/default-profile.png`}
+                `${process.env.REACT_APP_BACKEND_URL}/${userData.profilePicture}` : 
+                `${process.env.REACT_APP_BACKEND_URL}/uploads/profile-pictures/default-profile.png`}
               alt="Profile"
               className="w-32 h-32 rounded-full object-cover"
             />
@@ -276,8 +276,8 @@ function EditProfile() {
       <div className="flex flex-col items-center space-y-4">
         <img
           src={userData.profilePicture ? 
-            `${process.env.REACT_APP_BASE_URL}/${userData.profilePicture}` : 
-            `${process.env.REACT_APP_BASE_URL}/uploads/profile-pictures/default-profile.png`}
+            `${process.env.REACT_APP_BACKEND_URL}/${userData.profilePicture}` : 
+            `${process.env.REACT_APP_BACKEND_URL}/uploads/profile-pictures/default-profile.png`}
           alt="Profile"
           className="w-36 h-36 rounded-full object-cover "
         />

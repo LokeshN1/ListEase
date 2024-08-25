@@ -12,12 +12,12 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const authResponse = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/auth/check-auth`, {
+        const authResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/auth/check-auth`, {
           withCredentials: true,
         });
         if (authResponse.data.authenticated) {
           setIsLoggedIn(true);
-          const profileResponse = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/users/profile`, {
+          const profileResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {
             withCredentials: true,
           });
           setUserData(profileResponse.data);

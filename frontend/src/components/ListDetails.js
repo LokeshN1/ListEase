@@ -9,7 +9,7 @@ function ListDetails() {
   useEffect(() => {
     const fetchList = async () => {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/lists/${id}`, {
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/lists/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setList(response.data);
