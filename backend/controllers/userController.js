@@ -53,7 +53,9 @@ const signup = async (req, res) => {
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-      sameSite: 'strict', // Adjust sameSite attribute as needed
+      sameSite: 'Strict', // Adjust sameSite attribute as needed
+      maxAge: 3600000  // 1 hour in milliseconds
+
     });
 
     // Exclude sensitive information from the user object
@@ -95,7 +97,7 @@ const signin = async (req, res) => {
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',  // use secure cookies in production
-      sameSite: 'strict',
+      sameSite: 'Strict',
       maxAge: 3600000  // 1 hour in milliseconds
     });
     
