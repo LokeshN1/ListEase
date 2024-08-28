@@ -41,6 +41,7 @@ app.use(session({
 app.use(express.json());
 
 app.use((req, res, next) => {
+    console.log("CHECK");
     if (req.session) {
         console.log('Session ID:', req.sessionID);
         console.log('Session Data:', req.session);
