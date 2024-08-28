@@ -9,7 +9,7 @@ const authRoutes = require('./routes/authRoutes');
 const path = require('path');
 const fs = require('fs');
 const session = require('express-session');
-
+const MongoStore = require('connect-mongo');
 dotenv.config();
 
 connectDB();
@@ -29,8 +29,13 @@ app.use(cookieParser());
 app.use(session({
     secret: 'your-secret-key',  // Replace with a strong secret key
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }  // Set to true if using HTTPS
+    saveUninitialized: false,
+    cookie: { secure: true },  // Set to true if using HTTPS
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_URI,  // Your MongoDB connection string
+        collectionName: 'sessions',  // Name of the collection to store sessions
+        ttl: 60 * 60,  // Session lifetime in seconds (14 days)
+    }),
 }));
 
 app.use(express.json());
