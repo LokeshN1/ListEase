@@ -40,6 +40,14 @@ app.use(session({
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+    if (req.session) {
+        console.log('Session ID:', req.sessionID);
+        console.log('Session Data:', req.session);
+    }
+    next();
+});
+
 // Serve static files from the 'uploads' directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
