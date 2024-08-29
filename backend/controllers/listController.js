@@ -54,19 +54,21 @@ const createList = async (req, res) => {
   
     const filePath = req.file.path; // File path stored
     console.log(filePath);
+  
     try {
       const workbook = xlsx.readFile(filePath);
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const columns = xlsx.utils.sheet_to_json(worksheet, { header: 1 })[0];
   
-      // Store file path in session
-      req.session.filePath = filePath;
-      
+      // Store file path in a cookie with a 10-minute expiration
+      res.cookie('filePath', filePath, { maxAge: 10 * 60 * 1000, httpOnly: true, secure: true });
+  
       res.status(200).json({ columns, filePath });
     } catch (error) {
       res.status(500).json({ message: 'Error processing file', error });
     }
   };
+  
   
 
   const createListFromExcel = async (req, res) => {
@@ -110,17 +112,19 @@ const createList = async (req, res) => {
     const { title, heading, about, queryColumn, columns } = req.body;
     const access_key = uuidv4();
     const userId = req.user.id;
-    const filePath = req.session.filePath; // Retrieve the file path from the session
+  
+    // Retrieve the file path from the cookie
+    const filePath = req.cookies.filePath;
   
     if (!filePath) {
-      return res.status(400).json({ message: 'File path is not provided' });
+      return res.status(400).json({ message: 'File path is not provided or has expired' });
     }
   
     try {
       // Step 1: Create the new list
       const formattedColumns = columns.map((col) => ({
         name: col,
-        type: "String",
+        type: 'String',
       }));
   
       const newList = new List({
@@ -156,6 +160,9 @@ const createList = async (req, res) => {
       // Optionally delete the file after processing
       fs.unlinkSync(filePath);
   
+      // Clear the cookie after processing is complete
+      res.clearCookie('filePath');
+  
       res.status(201).json({ message: 'List created and data added successfully' });
     } catch (error) {
       console.error('Error creating list and adding data from Excel:', error);
@@ -167,6 +174,7 @@ const createList = async (req, res) => {
       res.status(500).json({ message: 'Error creating list and adding data from Excel', error: error.message });
     }
   };
+  
   
   // add data through excel
 const addDataToListThroughExcel = async (list_id, data) => {

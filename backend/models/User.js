@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
   mobile: { type: String }, // New field for mobile number
   linkedInProfile: { type: String }, // New field for LinkedIn profile URL
   website: { type: String }, // New field for personal website URL
+  filePath : {type : String}  // to store filepath of excel file
 });
 
 module.exports = mongoose.model('User', userSchema);
