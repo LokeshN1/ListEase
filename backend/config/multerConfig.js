@@ -6,13 +6,17 @@ const storage = multer.memoryStorage();
 
 // Middleware for uploading profile pictures
 const uploadProfilePicture = multer({
+  
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // Limit file size to 5MB
   fileFilter: (req, file, cb) => {
+    console.log("in multer config for profile picture");
     // Only accept image files
     const filetypes = /jpeg|jpg|png/;
     const mimetype = filetypes.test(file.mimetype);
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    console.log('Mimetype:', file.mimetype);
+    console.log('Extension:', path.extname(file.originalname).toLowerCase());
 
     if (mimetype && extname) {
       return cb(null, true);
@@ -27,6 +31,8 @@ const uploadExcel = multer({
   storage: storage,
   limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10MB
   fileFilter: (req, file, cb) => {
+    console.log("in multer config for excel file");
+
     console.log('Mimetype:', file.mimetype);
     console.log('Extension:', path.extname(file.originalname).toLowerCase());
     // Only accept Excel files
