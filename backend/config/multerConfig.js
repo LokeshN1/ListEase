@@ -1,18 +1,11 @@
 const multer = require('multer');
 const path = require('path');
 
-// Configure Multer
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/profile-pictures'); // Directory to save profile pictures
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // Append a timestamp to avoid filename conflicts
-  }
-});
+// Configure Multer to use memory storage
+const storage = multer.memoryStorage();
 
-// to store user profile picture
-const upload = multer({
+// Middleware for uploading profile pictures
+const uploadProfilePicture = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // Limit file size to 5MB
   fileFilter: (req, file, cb) => {
@@ -29,19 +22,9 @@ const upload = multer({
   }
 });
 
-// Configure Multer for Excel Files
-const excelStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/excel'); // Directory to save Excel files
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // Append a timestamp to avoid filename conflicts
-  }
-});
-
-// Excel File Upload Middleware
+// Middleware for uploading Excel files
 const uploadExcel = multer({
-  storage: excelStorage,
+  storage: storage,
   limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10MB
   fileFilter: (req, file, cb) => {
     console.log('Mimetype:', file.mimetype);
@@ -64,6 +47,6 @@ const uploadExcel = multer({
 });
 
 module.exports = {
-  uploadProfilePicture: upload, // Existing middleware for profile pictures
-  uploadExcel // New middleware for Excel files
+  uploadProfilePicture,
+  uploadExcel
 };
