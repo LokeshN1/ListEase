@@ -200,6 +200,27 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 });
 
 
+const updateUserProfilePicture = async (req, res) => {
+  try {
+    if (req.file) {
+      const imageUrl = req.file.path; // Cloudinary URL
+
+      // Save the imageUrl to the user's profile in your database
+      await User.findByIdAndUpdate(req.user.id, { profilePicture: imageUrl });
+
+      res.status(200).json({ message: 'Profile picture updated successfully', imageUrl });
+    } else {
+      res.status(400).json({ error: 'No file uploaded' });
+    }
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+module.exports = {
+  updateUserProfile, updateUserProfilePicture
+};
 
 
 
