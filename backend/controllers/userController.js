@@ -219,11 +219,10 @@ const updateUserProfilePicture = async (req, res) => {
 };
 
 module.exports = {
-  updateUserProfile, updateUserProfilePicture
+  signin,
+  signup,
+  getUserProfile,
+  signout,
+  updateUserProfile,
+  updateUserProfilePicture
 };
-
-
-
-
-
-module.exports = { signin, signup, getUserProfile, signout, updateUserProfile };
