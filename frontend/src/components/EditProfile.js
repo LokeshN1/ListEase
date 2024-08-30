@@ -133,6 +133,31 @@ function EditProfile() {
     );
   }
 
+  const handleSaveProfilePicture = async (file) => {
+    const data = new FormData();
+    data.append('profilePicture', file);
+  
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_BACKEND_URL}/api/users/account/profile`,
+        data,
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+  
+      // Handle success
+      console.log('Profile picture updated successfully:', response.data);
+      // Optionally update the UI or user state here
+    } catch (error) {
+      // Handle error
+      console.error('Error updating profile picture:', error);
+    }
+  };
+  
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
       <div className="w-full max-w-2xl bg-white shadow-lg rounded-lg p-8 border border-gray-200">
@@ -298,7 +323,7 @@ function EditProfile() {
             </button>
             <button
               className="flex-1 bg-green-500 text-white px-4 py-2 rounded-lg"
-              onClick={handleSave}
+              onClick={handleSaveProfilePicture}
             >
               Save
             </button>
