@@ -477,5 +477,5 @@ const deleteList = async (req, res) => {
 
 module.exports = { createList, getLists, getListById, addDataToList, getDataForList,
    fetchRowByColumnValue, updateRowInList, deleteRowFromListByIndex,
- updateListDetails, deleteList, createListFromExcel, uploadAndExtractColumns,
+ updateListDetails, deleteList, uploadAndExtractColumns,
  createListFromExcelWithData, addDataToListThroughExcel};
