@@ -42,6 +42,8 @@ const uploadExcel = multer({
   storage: multer.memoryStorage(), // Store Excel files in memory
   limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10MB
   fileFilter: (req, file, cb) => {
+    console.log("Excel file uploading!");
+
     const allowedMimes = [
       'application/vnd.ms-excel',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
