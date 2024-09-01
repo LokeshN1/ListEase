@@ -53,6 +53,7 @@ const uploadExcel = multer({
     } else {
       cb(new Error('Only Excel files are allowed'));
     }
+    console.log("EXCEL ended!")
   }
 });
 
