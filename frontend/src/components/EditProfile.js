@@ -19,7 +19,7 @@ function EditProfile() {
     linkedInProfile: '',
     website: '',
   });
-  const [, setProfileImage] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -116,10 +116,13 @@ function EditProfile() {
       setError('Failed to update profile');
     }
   };
-  const handleSaveProfilePicture = async (file) => {
+
+  const handleSaveProfilePicture = async () => {
     const data = new FormData();
-    data.append('profilePicture', file);
-  
+    if (formData.profilePicture instanceof File) {
+      data.append('profilePicture', formData.profilePicture);
+    }
+
     try {
       const response = await axios.put(
         `${process.env.REACT_APP_BACKEND_URL}/api/users/account/profile`,
@@ -134,13 +137,16 @@ function EditProfile() {
   
       // Handle success
       console.log('Profile picture updated successfully:', response.data);
-      // Optionally update the UI or user state here
+      setUserData({ ...userData, profilePicture: response.data.profilePicture });
+      setProfileImage(response.data.profilePicture);
+      setShowModal(false);
     } catch (error) {
       // Handle error
       console.error('Error updating profile picture:', error);
+      setError('Failed to update profile picture');
     }
   };
-  
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-gray-50">
@@ -157,7 +163,6 @@ function EditProfile() {
     );
   }
 
-  
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
       <div className="w-full max-w-2xl bg-white shadow-lg rounded-lg p-8 border border-gray-200">
@@ -167,16 +172,14 @@ function EditProfile() {
             {/* Profile Picture Section */}
             <div className="flex justify-center mb-6">
               <div className="relative group">
-              <img
-              src={userData.profilePicture ? 
-                `${process.env.REACT_APP_BACKEND_URL}/${userData.profilePicture}` : 
-                `${process.env.REACT_APP_BACKEND_URL}/uploads/profile-pictures/default-profile.png`}
-              alt="Profile"
-              className="w-32 h-32 rounded-full object-cover"
-            />
+                <img
+                  src={profileImage ? profileImage : `${process.env.REACT_APP_BACKEND_URL}/uploads/profile-pictures/default-profile.png`}
+                  alt="Profile"
+                  className="w-32 h-32 rounded-full object-cover"
+                />
                 <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <button
-                    className="bg-transparent text-white text-2xl font-bold p-2 rounded-lg "
+                    className="bg-transparent text-white text-2xl font-bold p-2 rounded-lg"
                     onClick={() => setShowModal(true)}
                   >
                     Edit
@@ -258,9 +261,9 @@ function EditProfile() {
                 />
               </div>
               <div className="flex flex-col col-span-2">
-                <label className="text-gray-700">LinkedIn Profile URL:</label>
+                <label className="text-gray-700">LinkedIn Profile:</label>
                 <input
-                  type="text"
+                  type="url"
                   name="linkedInProfile"
                   value={formData.linkedInProfile}
                   onChange={handleChange}
@@ -268,9 +271,9 @@ function EditProfile() {
                 />
               </div>
               <div className="flex flex-col col-span-2">
-                <label className="text-gray-700">Website URL:</label>
+                <label className="text-gray-700">Website:</label>
                 <input
-                  type="text"
+                  type="url"
                   name="website"
                   value={formData.website}
                   onChange={handleChange}
@@ -279,68 +282,54 @@ function EditProfile() {
               </div>
             </div>
 
-            {/* Save Button */}
-            <div className="flex justify-center mt-8">
+            <div className="flex justify-end mt-6">
               <button
+                className="bg-green-500 text-white px-4 py-2 rounded-lg"
                 onClick={handleSave}
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
               >
                 Save Changes
               </button>
             </div>
           </div>
         )}
-      </div>
 
-      {/* Modal for Editing Profile Picture */}
-{/* Modal for Editing Profile Picture */}
-{showModal && (
-  <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
-    <div className="bg-white p-6 rounded-lg relative w-full max-w-md">
-      <h2 className="text-xl font-semibold mb-3 text-center">Edit Profile Picture</h2>
-      <div className="flex flex-col items-center space-y-4">
-        <img
-          src={userData.profilePicture ? 
-            `${process.env.REACT_APP_BACKEND_URL}/${userData.profilePicture}` : 
-            `${process.env.REACT_APP_BACKEND_URL}/uploads/profile-pictures/default-profile.png`}
-          alt="Profile"
-          className="w-36 h-36 rounded-full object-cover "
-        />
-        <div className="w-full flex flex-col items-center space-y-3">
-          <input
-            type="file"
-            name="profilePicture"
-            accept="image/*"
-            onChange={handleChange}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg cursor-pointer w-full text-center"
-          />
-          <div className="flex justify-between w-full space-x-4">
-            <button
-              className="flex-1 bg-red-500 text-white px-4 py-2 rounded-lg"
-              onClick={handleRemovePicture}
-            >
-              Remove
-            </button>
-            <button
-              className="flex-1 bg-green-500 text-white px-4 py-2 rounded-lg"
-              onClick={handleSaveProfilePicture}
-            >
-              Save
-            </button>
+        {/* Modal for Editing Profile Picture */}
+        {showModal && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+              <h2 className="text-xl font-bold mb-4">Edit Profile Picture</h2>
+              <div className="flex items-center justify-center mb-4">
+                <img
+                  src={profileImage ? profileImage : `${process.env.REACT_APP_BACKEND_URL}/uploads/profile-pictures/default-profile.png`}
+                  alt="Profile"
+                  className="w-36 h-36 rounded-full object-cover"
+                />
+              </div>
+              <input
+                type="file"
+                accept="image/*"
+                name="profilePicture"
+                onChange={handleChange}
+                className="mb-4"
+              />
+              <div className="flex justify-end">
+                <button
+                  className="flex-1 bg-red-500 text-white px-4 py-2 rounded-lg mr-2"
+                  onClick={handleRemovePicture}
+                >
+                  Remove
+                </button>
+                <button
+                  className="flex-1 bg-green-500 text-white px-4 py-2 rounded-lg"
+                  onClick={handleSaveProfilePicture}
+                >
+                  Save
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
-      <button
-        className="absolute top-2 right-2 text-gray-600 text-2xl focus:outline-none"
-        onClick={() => setShowModal(false)}
-      >
-        &times;
-      </button>
-    </div>
-  </div>
-)}
-
-
     </div>
   );
 }
