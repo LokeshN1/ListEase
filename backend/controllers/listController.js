@@ -51,21 +51,33 @@ const createList = async (req, res) => {
   // upload excel file and extract column form it
   const uploadAndExtractColumns = async (req, res) => {
     try {
-        // File is already uploaded to Cloudinary by the middleware
-        // Now process the file directly from the buffer
-
-        const buffer = req.file.buffer;
-        const workbook = xlsx.read(buffer);
-        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-        const columns = xlsx.utils.sheet_to_json(worksheet, { header: 1 })[0];
-
-        res.status(200).json({ columns });
+      // Upload to Cloudinary
+      const result = await new Promise((resolve, reject) => {
+        cloudinary.uploader.upload_stream(
+          { folder: 'excel-files', public_id: Date.now().toString() },
+          (error, result) => {
+            if (error) reject(error);
+            resolve(result);
+          }
+        ).end(req.file.buffer);
+      });
+  
+      const fileUrl = result.secure_url;
+      // Save fileUrl to database or pass it along
+  
+      // Process the file using its URL
+      const response = await fetch(fileUrl);
+      const buffer = await response.buffer();
+      const workbook = xlsx.read(buffer);
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const columns = xlsx.utils.sheet_to_json(worksheet, { header: 1 })[0];
+  
+      res.status(200).json({ columns, fileUrl });
     } catch (error) {
-        console.error('Error processing file:', error);
-        res.status(500).json({ message: 'Error processing file', error: error.message });
+      console.error('Error uploading and extracting columns:', error);
+      res.status(500).json({ message: 'Error processing file', error: error.message });
     }
-};
-
+  };
 
 // get excel file and extract data of it then store data in list
 const createListFromExcelWithData = async (req, res) => {
