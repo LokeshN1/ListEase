@@ -204,7 +204,7 @@ const updateUserProfilePicture = async (req, res) => {
   try {
     if (req.file) {
       const imageUrl = req.file.path; // Cloudinary URL
-
+  
       // Save the imageUrl to the user's profile in your database
       await User.findByIdAndUpdate(req.user.id, { profilePicture: imageUrl });
 

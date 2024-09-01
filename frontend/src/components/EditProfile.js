@@ -116,23 +116,6 @@ function EditProfile() {
       setError('Failed to update profile');
     }
   };
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-50">
-        <div className="text-lg font-semibold text-gray-700">Loading...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-50">
-        <div className="text-lg font-semibold text-red-600">{error}</div>
-      </div>
-    );
-  }
-
   const handleSaveProfilePicture = async (file) => {
     const data = new FormData();
     data.append('profilePicture', file);
@@ -157,6 +140,23 @@ function EditProfile() {
       console.error('Error updating profile picture:', error);
     }
   };
+  
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-50">
+        <div className="text-lg font-semibold text-gray-700">Loading...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-50">
+        <div className="text-lg font-semibold text-red-600">{error}</div>
+      </div>
+    );
+  }
+
   
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
