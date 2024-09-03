@@ -54,7 +54,7 @@ const uploadAndExtractColumns = async (req, res) => {
   try {
     // Use the URL returned by the Cloudinary middleware
     const fileUrl = req.file.path;
-
+    console.log("fileUrl : "+ fileUrl);
     // Fetch the file using its URL
     const response = await fetch(fileUrl);
     const buffer = await response.buffer();
