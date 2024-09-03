@@ -39,14 +39,15 @@ const uploadProfilePicture = multer({
 
 // Multer middleware for uploading Excel files
 // Configure Cloudinary Storage for Excel files
+// Configure Cloudinary Storage for Excel files
 const excelStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'excels', // Folder name in Cloudinary for storing Excel files
     format: async (req, file) => path.extname(file.originalname).substring(1), // Use the original file extension
     public_id: (req, file) => `${req.user.id}_excel_${Date.now()}`, // Set a unique file name
+    resource_type: 'raw' // Set resource type to raw for non-media files
   },
-  
 });
 
 // Multer middleware for uploading Excel files to Cloudinary
