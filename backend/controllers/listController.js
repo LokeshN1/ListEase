@@ -89,8 +89,8 @@ const createListFromExcelWithData = async (req, res) => {
   try {
       // Fetch the file from Cloudinary
       const response = await fetch(fileUrl);
-      const buffer = await response.buffer();
-      const workbook = xlsx.read(buffer);
+      const arrayBuffer = await response.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer); // Convert ArrayBuffer to Buffer bqz arraybuffer is suitable for binary data      const workbook = xlsx.read(buffer);
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
 
       // Convert sheet to JSON array of objects
