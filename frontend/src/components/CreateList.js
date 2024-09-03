@@ -13,6 +13,8 @@ function CreateList() {
   const [file, setFile] = useState(null);
   const [excelColumns, setExcelColumns] = useState([]);
   const [uploadOption, setUploadOption] = useState('');
+  const [fileUrl, setFileUrl] = useState(''); // State to store the file URL
+
   const [errors, setErrors] = useState({});
   const [editingIndex, setEditingIndex] = useState(null);
   const navigate = useNavigate();
@@ -78,35 +80,37 @@ function CreateList() {
         withCredentials: true,
       });
 
-      setExcelColumns(response.data.columns);
-      setStep(2); // Move to the next step to select query column
+      setExcelColumns(response.data.columns); // Save the extracted columns
+      setFileUrl(response.data.fileUrl); // Save the file URL for later use
+      setStep(2); // Move to the next step to select the query column
     } catch (error) {
       setErrors({ file: 'Error uploading and processing the file' });
     }
   };
-
-  const handleSubmitExcel = async (e) => {
-    e.preventDefault();
-    if (!validateStep2()) return;
-
-    try {
-      await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/api/lists/create-list-excel`,
-        {
-          title,
-          heading,
-          about,
-          queryColumn,
-          columns: excelColumns,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-      navigate(`/my-lists`);
-    } catch (error) {
-      setErrors({ submit: 'Error creating list' });
-    }
+    // Function to handle the final submission of the list creation form
+    const handleSubmitExcel = async (e) => {
+      e.preventDefault();
+      if (!validateStep2()) return;
+  
+      try {
+        await axios.post(
+          `${process.env.REACT_APP_BACKEND_URL}/api/lists/create-list-excel`,
+          {
+            title,
+            heading,
+            about,
+            queryColumn,
+            columns: excelColumns,
+            fileUrl, // Include the file URL here
+          },
+          {
+            withCredentials: true,
+          }
+        );
+        navigate(`/my-lists`);
+      } catch (error) {
+        setErrors({ submit: 'Error creating list' });
+      }
   };
 
   const handleSubmitManual = async (e) => {
@@ -331,4 +335,3 @@ function CreateList() {
 }
 
 export default CreateList;
-

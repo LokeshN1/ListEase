@@ -38,8 +38,19 @@ const uploadProfilePicture = multer({
 });
 
 // Multer middleware for uploading Excel files
+// Configure Cloudinary Storage for Excel files
+const excelStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'excels', // Folder name in Cloudinary for storing Excel files
+    format: async (req, file) => path.extname(file.originalname).substring(1), // Use the original file extension
+    public_id: (req, file) => `${req.user.id}_excel_${Date.now()}`, // Set a unique file name
+  },
+});
+
+// Multer middleware for uploading Excel files to Cloudinary
 const uploadExcel = multer({
-  storage: multer.memoryStorage(), // Store Excel files in memory
+  storage: excelStorage, // Use Cloudinary storage for Excel files
   limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10MB
   fileFilter: (req, file, cb) => {
     console.log("Excel file uploading!");

@@ -17,7 +17,7 @@ router.post('/manual', auth, createList);
 router.post('/excel-extract-column', auth, uploadExcel.single('file'), uploadAndExtractColumns);
 
 // Create list and add data from Cloudinary-stored Excel file
-router.post('/create-list-excel', auth, uploadExcel.single('file'), createListFromExcelWithData);
+router.post('/create-list-excel', auth, createListFromExcelWithData);
 
 router.get('/', auth, getLists);
 router.get('/:id', getListById);
