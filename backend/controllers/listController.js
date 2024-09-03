@@ -49,88 +49,92 @@ const createList = async (req, res) => {
 
 
   // upload excel file and extract column form it
+  // upload excel file and extract columns from it
   const uploadAndExtractColumns = async (req, res) => {
     try {
-        // Upload to Cloudinary
-        const result = await new Promise((resolve, reject) => {
-            cloudinary.uploader.upload_stream(
-                { folder: 'excel-files', public_id: Date.now().toString() },
-                (error, result) => {
-                    if (error) reject(error);
-                    resolve(result);
-                }
-            ).end(req.file.buffer);
-        });
+      // Use the URL returned by the Cloudinary middleware
+      const fileUrl = req.file.path;
+      console.log("fileUrl" + fileUrl);
 
-        const fileUrl = result.secure_url;
-
-        // Process the file using its URL
-        const response = await fetch(fileUrl);
-        const buffer = await response.buffer();
-        const workbook = xlsx.read(buffer);
-        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-        const columns = xlsx.utils.sheet_to_json(worksheet, { header: 1 })[0];
-
-        res.status(200).json({ columns, fileUrl });
+      // Fetch the file using its URL
+      const response = await fetch(fileUrl);
+      const arrayBuffer = await response.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer); // Convert ArrayBuffer to Buffer bqz arraybuffer is suitable for binary data
+  
+      const workbook = xlsx.read(buffer);
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const columns = xlsx.utils.sheet_to_json(worksheet, { header: 1 })[0];
+  
+      // Send back columns and file URL
+      res.status(200).json({ columns, fileUrl });
     } catch (error) {
-        console.error('Error uploading and extracting columns:', error);
-        res.status(500).json({ message: 'Error processing file', error: error.message });
+      console.error('Error uploading and extracting columns:', error);
+      res.status(500).json({ message: 'Error processing file', error: error.message });
     }
-};
+  };
+  
+
 
 // get excel file and extract data of it then store data in list
 const createListFromExcelWithData = async (req, res) => {
-    const { title, heading, about, queryColumn, columns } = req.body;
-    const access_key = uuidv4();
-    const userId = req.user.id;
-    const fileUrl = req.body.fileUrl; // Retrieve the file URL from the request body
+  const { title, heading, about, queryColumn, columns } = req.body;
+  const access_key = uuidv4();
+  const userId = req.user.id;
+  const fileUrl = req.body.fileUrl; // Retrieve the file URL from the request body
 
-    if (!fileUrl) {
-        return res.status(400).json({ message: 'File URL is not provided' });
+  if (!fileUrl) {
+    return res.status(400).json({ message: 'File URL is not provided' });
+  }
+
+  try {
+    // Fetch the file from Cloudinary
+    const response = await fetch(fileUrl);
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer); // Convert ArrayBuffer to Buffer
+
+    // Import xlsx here
+    const xlsx = require('xlsx');
+
+    // Read the Excel file
+    const workbook = xlsx.read(buffer);
+    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+
+    // Convert sheet to JSON array of objects
+    const data = xlsx.utils.sheet_to_json(worksheet);
+
+    if (data.length === 0) {
+      throw new Error('Excel file is empty or data is not in correct format');
     }
 
-    try {
-        // Fetch the file from Cloudinary
-        const response = await fetch(fileUrl);
-        const buffer = await response.buffer();
-        const workbook = xlsx.read(buffer);
-        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+    // Create the new list
+    const formattedColumns = columns.map((col) => ({
+      name: col,
+      type: "String",
+    }));
 
-        // Convert sheet to JSON array of objects
-        const data = xlsx.utils.sheet_to_json(worksheet);
+    const newList = new List({
+      title,
+      user_id: userId,
+      access_key,
+      heading,
+      about,
+      columns: formattedColumns,
+      queryColumn,
+    });
 
-        if (data.length === 0) {
-            throw new Error('Excel file is empty or data is not in correct format');
-        }
+    await newList.save();
+    const listId = newList._id;
 
-        // Create the new list
-        const formattedColumns = columns.map((col) => ({
-            name: col,
-            type: "String",
-        }));
+    // Add data to the list
+    await addDataToListThroughExcel(listId, data);
 
-        const newList = new List({
-            title,
-            user_id: userId,
-            access_key,
-            heading,
-            about,
-            columns: formattedColumns,
-            queryColumn,
-        });
-
-        await newList.save();
-        const listId = newList._id;
-
-        // Add data to the list
-        await addDataToListThroughExcel(listId, data);
-
-        res.status(201).json({ message: 'List created and data added successfully' });
-    } catch (error) {
-        console.error('Error creating list and adding data from Excel:', error);
-        res.status(500).json({ message: 'Error creating list and adding data from Excel', error: error.message });
-    }
+    res.status(201).json({ message: 'List created and data added successfully' });
+  } catch (error) {
+    console.error('Error creating list and adding data from Excel:', error);
+    res.status(500).json({ message: 'Error creating list and adding data from Excel', error: error.message });
+  }
 };
+
   
   
   // add data through excel
