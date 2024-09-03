@@ -14,6 +14,7 @@ function CreateList() {
   const [excelColumns, setExcelColumns] = useState([]);
   const [uploadOption, setUploadOption] = useState('');
   const [fileUrl, setFileUrl] = useState(''); // State to store the file URL
+  const [filePublicId, setFilePublicId] = useState(''); // State to store the file URL
 
   const [errors, setErrors] = useState({});
   const [editingIndex, setEditingIndex] = useState(null);
@@ -82,6 +83,8 @@ function CreateList() {
 
       setExcelColumns(response.data.columns); // Save the extracted columns
       setFileUrl(response.data.fileUrl); // Save the file URL for later use
+      setFilePublicId(response.data.public_id); // Save the file public id so we can delete it after use
+      
       setStep(2); // Move to the next step to select the query column
     } catch (error) {
       setErrors({ file: 'Error uploading and processing the file' });
@@ -102,6 +105,7 @@ function CreateList() {
             queryColumn,
             columns: excelColumns,
             fileUrl, // Include the file URL here
+            filePublicId
           },
           {
             withCredentials: true,

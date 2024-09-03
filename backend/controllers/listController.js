@@ -54,7 +54,10 @@ const createList = async (req, res) => {
     try {
       // Use the URL returned by the Cloudinary middleware
       const fileUrl = req.file.path;
+      const FilePublicId = req.file.FilePublicId;
+
       console.log("fileUrl" + fileUrl);
+      console.log("file public_id " + FilePublicId);
 
       // Fetch the file using its URL
       const response = await fetch(fileUrl);
@@ -66,7 +69,7 @@ const createList = async (req, res) => {
       const columns = xlsx.utils.sheet_to_json(worksheet, { header: 1 })[0];
   
       // Send back columns and file URL
-      res.status(200).json({ columns, fileUrl });
+      res.status(200).json({ columns, fileUrl, FilePublicId });
     } catch (error) {
       console.error('Error uploading and extracting columns:', error);
       res.status(500).json({ message: 'Error processing file', error: error.message });
@@ -81,6 +84,7 @@ const createListFromExcelWithData = async (req, res) => {
   const access_key = uuidv4();
   const userId = req.user.id;
   const fileUrl = req.body.fileUrl; // Retrieve the file URL from the request body
+  const filePublicId = req.body.filePublicId;
 
   if (!fileUrl) {
     return res.status(400).json({ message: 'File URL is not provided' });
@@ -127,6 +131,9 @@ const createListFromExcelWithData = async (req, res) => {
 
     // Add data to the list
     await addDataToListThroughExcel(listId, data);
+
+    // Delete the Excel file from Cloudinary
+     await cloudinary.uploader.destroy(filePublicId);
 
     res.status(201).json({ message: 'List created and data added successfully' });
   } catch (error) {
