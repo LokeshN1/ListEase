@@ -46,15 +46,16 @@ const excelStorage = new CloudinaryStorage({
     format: async (req, file) => path.extname(file.originalname).substring(1), // Use the original file extension
     public_id: (req, file) => `${req.user.id}_excel_${Date.now()}`, // Set a unique file name
   },
+  
 });
 
 // Multer middleware for uploading Excel files to Cloudinary
 const uploadExcel = multer({
-  storage: excelStorage, // Use Cloudinary storage for Excel files
-  limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10MB
+  storage: excelStorage,
+  limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     console.log("Excel file uploading!");
-
+    console.log("File info:", file); // Log file info
     const allowedMimes = [
       'application/vnd.ms-excel',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -64,9 +65,11 @@ const uploadExcel = multer({
     } else {
       cb(new Error('Only Excel files are allowed'));
     }
-    console.log("EXCEL ended!")
+    console.log("EXCEL ended!");
   }
 });
+
+
 
 module.exports = {
   uploadProfilePicture,
