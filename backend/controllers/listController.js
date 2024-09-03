@@ -50,25 +50,29 @@ const createList = async (req, res) => {
 
   // upload excel file and extract column form it
   // upload excel file and extract columns from it
-const uploadAndExtractColumns = async (req, res) => {
-  try {
-    // Use the URL returned by the Cloudinary middleware
-    const fileUrl = req.file.path;
-    console.log("fileUrl : "+ fileUrl);
-    // Fetch the file using its URL
-    const response = await fetch(fileUrl);
-    const buffer = await response.buffer();
-    const workbook = xlsx.read(buffer);
-    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    const columns = xlsx.utils.sheet_to_json(worksheet, { header: 1 })[0];
+  const uploadAndExtractColumns = async (req, res) => {
+    try {
+      // Use the URL returned by the Cloudinary middleware
+      const fileUrl = req.file.path;
+      console.log("fileUrl" + fileUrl);
 
-    // Send back columns and file URL
-    res.status(200).json({ columns, fileUrl });
-  } catch (error) {
-    console.error('Error uploading and extracting columns:', error);
-    res.status(500).json({ message: 'Error processing file', error: error.message });
-  }
-};
+      // Fetch the file using its URL
+      const response = await fetch(fileUrl);
+      const arrayBuffer = await response.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer); // Convert ArrayBuffer to Buffer bqz arraybuffer is suitable for binary data
+  
+      const workbook = xlsx.read(buffer);
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const columns = xlsx.utils.sheet_to_json(worksheet, { header: 1 })[0];
+  
+      // Send back columns and file URL
+      res.status(200).json({ columns, fileUrl });
+    } catch (error) {
+      console.error('Error uploading and extracting columns:', error);
+      res.status(500).json({ message: 'Error processing file', error: error.message });
+    }
+  };
+  
 
 
 // get excel file and extract data of it then store data in list
