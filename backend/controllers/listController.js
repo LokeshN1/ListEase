@@ -101,7 +101,31 @@ const extractPublicId = (url) => {
     }
   };
   
-
+// Delete file from cloudinary
+  const deleteFileFromCloudinary = async (publicId) => {
+    try {
+      if (!publicId) {
+        throw new Error('Public ID is not provided');
+      }
+      
+      // Ensure the publicId is in the correct format (remove file extension if included)
+      const resourceType = publicId.endsWith('.xlsx') ? 'raw' : 'image'; // Adjust based on file type
+      
+      console.log('Attempting to delete file with Public ID:', publicId);
+      
+      const result = await cloudinary.v2.api.delete_resources([publicId], { resource_type: resourceType });
+      
+      if (result.deleted[publicId] === 'not found') {
+        throw new Error('File not found on Cloudinary');
+      }
+  
+      console.log('File deleted successfully:', result);
+    } catch (error) {
+      console.error('Error deleting file from Cloudinary:', error);
+      throw new Error('Error deleting file from Cloudinary');
+    }
+  };
+  
 
 // get excel file and extract data of it then store data in list
 const createListFromExcelWithData = async (req, res) => {
@@ -157,14 +181,9 @@ const createListFromExcelWithData = async (req, res) => {
     // Add data to the list
     await addDataToListThroughExcel(listId, data);
 
-    // Delete the Excel file from Cloudinary
-    try {
-      const result = await cloudinary.uploader.destroy(filePublicId, { resource_type: 'raw' });
-      console.log('File deleted successfully:', result);
-    } catch (error) {
-      console.error('Error deleting file from Cloudinary:', error);
-      throw new Error('Error deleting file from Cloudinary');
-    }
+        // Delete the Excel file from Cloudinary
+        await deleteFileFromCloudinary(filePublicId);
+
 
     res.status(201).json({ message: 'List created and data added successfully' });
   } catch (error) {
