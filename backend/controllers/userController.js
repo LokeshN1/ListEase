@@ -6,6 +6,7 @@ const asyncHandler = require('express-async-handler');
 const upload = require('../config/multerConfig');
 const path = require('path');
 const fs = require('fs');
+const cloudinary = require('cloudinary');
 
 // SignUp -: create a new user
 
