@@ -51,14 +51,26 @@ const extractPublicId = (url) => {
   // Find the index of "/excels/"
   const startIndex = url.indexOf('/excels/');
   
-  // Find the extension to remove it
-  const endIndex = url.lastIndexOf('.');
+  if (startIndex === -1) {
+    throw new Error('Public ID not found in URL');
+  }
 
-  // Extract the public_id
-  const publicId = url.substring(startIndex + 1, endIndex); // +1 to remove the leading "/"
+  // Adjust the start index to be right after "/excels/"
+  const start = startIndex + 1; 
+
+  // Find the index of the end of the URL or end of the file extension
+  const endIndex = url.indexOf('.xlsx', start);
+  
+  if (endIndex === -1) {
+    throw new Error('File extension not found in URL');
+  }
+
+  // Extract the public ID, including the file extension
+  const publicId = url.substring(start, endIndex + 5); // Include ".xlsx"
 
   return publicId;
 };
+
 
 
   // upload excel file and extract column form it
