@@ -94,6 +94,7 @@ const extractPublicId = (url) => {
 // get excel file and extract data of it then store data in list
 const createListFromExcelWithData = async (req, res) => {
   const { title, heading, about, queryColumn, columns } = req.body;
+  console.log("Data come from frontend in step2 : "+ req.body);
   const access_key = uuidv4();
   const userId = req.user.id;
   const fileUrl = req.body.fileUrl; // Retrieve the file URL from the request body
