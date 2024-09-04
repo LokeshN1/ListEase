@@ -94,12 +94,11 @@ const extractPublicId = (url) => {
 // get excel file and extract data of it then store data in list
 const createListFromExcelWithData = async (req, res) => {
   const { title, heading, about, queryColumn, columns, filePublicId } = req.body;
-  console.log("file public id came from frontend in step2 : "+ filePublicId);
+  console.log("file public id came from frontend in step2 : " + filePublicId);
   const access_key = uuidv4();
   const userId = req.user.id;
   const fileUrl = req.body.fileUrl; // Retrieve the file URL from the request body
-  // const filePublicId = req.body.filePublicId;
-  
+
   if (!fileUrl) {
     return res.status(400).json({ message: 'File URL is not provided' });
   }
@@ -148,24 +147,20 @@ const createListFromExcelWithData = async (req, res) => {
 
     // Delete the Excel file from Cloudinary
     try {
-      await cloudinary.uploader.destroy(filePublicId, { resource_type: 'raw' }, (error, result) => {
-        if (error) {
-          console.error('Error deleting file from Cloudinary:', error);
-          throw new Error('Error deleting file');
-        } else {
-          console.log('File deleted successfully:', result);
-        }
-      });
+      const result = await cloudinary.uploader.destroy(filePublicId, { resource_type: 'raw' });
+      console.log('File deleted successfully:', result);
     } catch (error) {
-      console.error('Error in delete operation:', error);
+      console.error('Error deleting file from Cloudinary:', error);
+      throw new Error('Error deleting file from Cloudinary');
     }
-    
+
     res.status(201).json({ message: 'List created and data added successfully' });
   } catch (error) {
     console.error('Error creating list and adding data from Excel:', error);
     res.status(500).json({ message: 'Error creating list and adding data from Excel', error: error.message });
   }
 };
+
 
   
   
