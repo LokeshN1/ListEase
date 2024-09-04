@@ -204,9 +204,11 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 const updateUserProfilePicture = async (req, res) => {
   try {
     if (req.file) {
-      const previousImgUrl = req.user.profilePicture;
+      const userId = req.user.id; // Assuming you're using a middleware that sets req.user
+      const user = await User.findById(userId);
+      const previousImgUrl = user.profilePicture;
 
-    // console.log("Info about profile picture also its datatype"+ previousImgUrl+"\t"+typeof(previousImgUrl));
+    console.log("Info about profile picture also its datatype"+ previousImgUrl+"\t"+typeof(previousImgUrl));
     if(previousImgUrl != undefined){ // if their exist a profile picture 
   // first delete the previous profile picture from cloudnary
       const publicId = extractPublicId(previousImgUrl);
