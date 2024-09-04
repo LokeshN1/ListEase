@@ -205,9 +205,14 @@ const updateUserProfilePicture = async (req, res) => {
   try {
     if (req.file) {
       const previousImgUrl = req.user.profilePicture;
-    // first delete the previous profile picture from cloudnary
-       const publicId = extractPublicId(previousImgUrl);
-       await deleteImageFromCloudinary(publicId);
+
+    
+    if(previousImgUrl){ // if their exist a profile picture 
+  // first delete the previous profile picture from cloudnary
+      const publicId = extractPublicId(previousImgUrl);
+      await deleteImageFromCloudinary(publicId);
+    }
+       
 
       const imageUrl = req.file.path; // Cloudinary URL
 
@@ -251,7 +256,7 @@ const deleteImageFromCloudinary = async (publicId) => {
   }
 };
 
-// Function to extract public_id starting from "/excels/"
+// Function to extract public_id starting from "/profile_pictures/"
 const extractPublicId = (url) => {
   // Find the index of "/profile_pictures/"
   const startIndex = url.indexOf('/profile_pictures/');
@@ -281,16 +286,22 @@ const removeProfilePicture = async (req, res) => {
     const userId = req.user.id; // Assuming you're using a middleware that sets req.user
     const user = await User.findById(userId);
 
-    // Delete the profile picture from Cloudinary if it exists
-    const publicId = extractPublicId(user.profilePicture);
-    console.log("profile picture public ID : " + publicId);
+    if (user.profilePicture) {
+      // Extract the public ID from the profile picture URL
+      const publicId = extractPublicId(user.profilePicture);
+      console.log("Profile picture public ID:", publicId);
 
-    await deleteImageFromCloudinary(publicId);
+      // Delete the profile picture from Cloudinary
+      await deleteImageFromCloudinary(publicId);
 
-    // call function which will delete the image from cloudnary
+      // Remove the profile picture from the database
+      user.profilePicture = '';
+      await user.save();
 
-
-    res.status(200).json({ message: 'Profile picture removed successfully' });
+      res.status(200).json({ message: 'Profile picture removed successfully' });
+    } else {
+      res.status(400).json({ message: 'No profile picture to remove' });
+    }
   } catch (error) {
     console.error('Error removing profile picture:', error);
     res.status(500).json({ message: 'Error removing profile picture' });
