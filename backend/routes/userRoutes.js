@@ -14,6 +14,6 @@ router.get('/profile', authenticateToken, getUserProfile);
 // PUT /api/users/account/profile
 router.put('/account/profile/updateProfilePicture', authenticateToken, uploadProfilePicture.single('profilePicture'), updateUserProfilePicture);
 
-router.get('/account/profile/removeProfilePicture', authenticateToken, removeProfilePicture)
+router.put('/account/profile/removeProfilePicture', authenticateToken, removeProfilePicture)
 
 module.exports = router;
