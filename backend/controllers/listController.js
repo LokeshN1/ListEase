@@ -54,7 +54,7 @@ const createList = async (req, res) => {
     try {
       // Use the URL returned by the Cloudinary middleware
       const fileUrl = req.file.path;
-      const FilePublicId = req.file.FilePublicId;
+      const FilePublicId = req.file.public_id;
 
       console.log("fileUrl" + fileUrl);
       console.log("file public_id " + FilePublicId);
