@@ -74,7 +74,7 @@ function UserDashboard() {
           <div className="flex items-center">
             <img
               src={userData.profilePicture ? 
-                `${process.env.REACT_APP_BACKEND_URL}/${userData.profilePicture}` : 
+                userData.profilePicture : 
                 `${process.env.REACT_APP_BACKEND_URL}/uploads/profile-pictures/default-profile.png`}
               alt="Profile"
               className="w-16 h-16 rounded-full object-cover"
