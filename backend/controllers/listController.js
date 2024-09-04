@@ -147,8 +147,19 @@ const createListFromExcelWithData = async (req, res) => {
     await addDataToListThroughExcel(listId, data);
 
     // Delete the Excel file from Cloudinary
-     await cloudinary.uploader.destroy(filePublicId);
-
+    try {
+      await cloudinary.uploader.destroy(filePublicId, { resource_type: 'raw' }, (error, result) => {
+        if (error) {
+          console.error('Error deleting file from Cloudinary:', error);
+          throw new Error('Error deleting file');
+        } else {
+          console.log('File deleted successfully:', result);
+        }
+      });
+    } catch (error) {
+      console.error('Error in delete operation:', error);
+    }
+    
     res.status(201).json({ message: 'List created and data added successfully' });
   } catch (error) {
     console.error('Error creating list and adding data from Excel:', error);
