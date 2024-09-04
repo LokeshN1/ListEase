@@ -84,7 +84,7 @@ function CreateList() {
       setExcelColumns(response.data.columns); // Save the extracted columns
       setFileUrl(response.data.fileUrl); // Save the file URL for later use
       setFilePublicId(response.data.FilePublicId); // Save the file public id so we can delete it after use
-      
+      console.log("FILE public id (in frontend step 1) :" +filePublicId);
       setStep(2); // Move to the next step to select the query column
     } catch (error) {
       setErrors({ file: 'Error uploading and processing the file' });
@@ -96,6 +96,7 @@ function CreateList() {
       if (!validateStep2()) return;
   
       try {
+        console.log("FILE public id (in frontend step 2) :" +filePublicId);
         await axios.post(
           `${process.env.REACT_APP_BACKEND_URL}/api/lists/create-list-excel`,
           {

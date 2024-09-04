@@ -93,13 +93,13 @@ const extractPublicId = (url) => {
 
 // get excel file and extract data of it then store data in list
 const createListFromExcelWithData = async (req, res) => {
-  const { title, heading, about, queryColumn, columns } = req.body;
-  console.log("Data come from frontend in step2 : "+ req.body);
+  const { title, heading, about, queryColumn, columns, filePublicId } = req.body;
+  console.log("file public id came from frontend in step2 : "+ filePublicId);
   const access_key = uuidv4();
   const userId = req.user.id;
   const fileUrl = req.body.fileUrl; // Retrieve the file URL from the request body
-  const filePublicId = req.body.filePublicId;
-
+  // const filePublicId = req.body.filePublicId;
+  
   if (!fileUrl) {
     return res.status(400).json({ message: 'File URL is not provided' });
   }
