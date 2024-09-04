@@ -83,7 +83,7 @@ function CreateList() {
 
       setExcelColumns(response.data.columns); // Save the extracted columns
       setFileUrl(response.data.fileUrl); // Save the file URL for later use
-      setFilePublicId(response.data.public_id); // Save the file public id so we can delete it after use
+      setFilePublicId(response.data.FilePublicId); // Save the file public id so we can delete it after use
       
       setStep(2); // Move to the next step to select the query column
     } catch (error) {
