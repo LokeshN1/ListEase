@@ -53,7 +53,7 @@ const excelStorage = new CloudinaryStorage({
 // Multer middleware for uploading Excel files to Cloudinary
 const uploadExcel = multer({
   storage: excelStorage,
-  limits: { fileSize: 10 * 1024 * 1024 },
+  limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10MB
   fileFilter: (req, file, cb) => {
     console.log("Excel file uploading!");
     console.log("File info:", file); // Log file info
@@ -69,6 +69,7 @@ const uploadExcel = multer({
     console.log("EXCEL ended!");
   }
 });
+
 
 
 
