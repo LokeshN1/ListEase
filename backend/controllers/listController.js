@@ -46,7 +46,21 @@ const createList = async (req, res) => {
     }
   };
   
+// Function to extract public_id from cloudnary file 
+const extractPublicId = (url) => {
+  // Find the part of the URL after /upload/
+  const startIndex = url.indexOf('/upload/') + '/upload/'.length;
 
+  // Find the extension to remove it
+  const endIndex = url.lastIndexOf('.');
+
+  // Extract the public_id
+  const publicId = url.substring(startIndex, endIndex);
+
+  return publicId;
+};
+
+const publicId = extractPublicId(fileUrl);
 
   // upload excel file and extract column form it
   // upload excel file and extract columns from it
@@ -54,7 +68,7 @@ const createList = async (req, res) => {
     try {
       // Use the URL returned by the Cloudinary middleware
       const fileUrl = req.file.path;
-      const FilePublicId = req.file.public_id;
+      const FilePublicId = extractPublicId(fileUrl);
 
       console.log("fileUrl" + fileUrl);
       console.log("file public_id " + FilePublicId);
@@ -84,7 +98,7 @@ const createListFromExcelWithData = async (req, res) => {
   const access_key = uuidv4();
   const userId = req.user.id;
   const fileUrl = req.body.fileUrl; // Retrieve the file URL from the request body
-  const filePublicId = req.body.public_id;
+  const getPublicId = (fileUrl) => fileUrl.split("/").pop().split(".")[0];
 
   if (!fileUrl) {
     return res.status(400).json({ message: 'File URL is not provided' });
