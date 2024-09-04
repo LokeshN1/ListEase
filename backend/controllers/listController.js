@@ -60,7 +60,6 @@ const extractPublicId = (url) => {
   return publicId;
 };
 
-const publicId = extractPublicId(fileUrl);
 
   // upload excel file and extract column form it
   // upload excel file and extract columns from it
@@ -68,8 +67,7 @@ const publicId = extractPublicId(fileUrl);
     try {
       // Use the URL returned by the Cloudinary middleware
       const fileUrl = req.file.path;
-      let FilePublicId = "";
-      if(fileUrl != undefined) FilePublicId = extractPublicId(fileUrl);
+      const FilePublicId = FilePublicId = extractPublicId(fileUrl);
 
       console.log("fileUrl" + fileUrl);
       console.log("file public_id " + FilePublicId);
