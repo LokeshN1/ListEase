@@ -69,7 +69,7 @@ function EditProfile() {
 
   const handleRemovePicture = async () => {
     try {
-      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/users/account/profile`, {
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/users/account/profile/removeProfilePicture`, {
         removeProfilePicture: 'true',
       }, {
         withCredentials: true,
@@ -125,7 +125,7 @@ function EditProfile() {
 
     try {
       const response = await axios.put(
-        `${process.env.REACT_APP_BACKEND_URL}/api/users/account/profile`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/users/account/profile/updateProfilePicture`,
         data,
         {
           withCredentials: true,

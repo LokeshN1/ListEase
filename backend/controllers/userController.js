@@ -203,8 +203,13 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 const updateUserProfilePicture = async (req, res) => {
   try {
     if (req.file) {
+      const previousImgUrl = req.user.profilePicture;
+    // first delete the previous profile picture from cloudnary
+       const publicId = extractPublicId(previousImgUrl);
+       await deleteImageFromCloudinary(publicId);
+
       const imageUrl = req.file.path; // Cloudinary URL
-  
+
       // Save the imageUrl to the user's profile in your database
       await User.findByIdAndUpdate(req.user.id, { profilePicture: imageUrl });
 
@@ -218,11 +223,85 @@ const updateUserProfilePicture = async (req, res) => {
   }
 };
 
+// Delete profile picture from cloudnary in case user either removes its profile picture or update a new profile picture
+
+// Delete file from cloudinary
+const deleteImageFromCloudinary = async (publicId) => {
+  try {
+    if (!publicId) {
+      throw new Error('Public ID is not provided');
+    }
+    
+    // Ensure the publicId is in the correct format (remove file extension if included)
+    const resourceType = 'image'; // Adjust based on file type
+    
+    console.log('Attempting to delete file with Public ID:', publicId);
+    
+    const result = await cloudinary.v2.api.delete_resources([publicId], { resource_type: resourceType });
+    
+    if (result.deleted[publicId] === 'not found') {
+      throw new Error('File not found on Cloudinary');
+    }
+
+    console.log('File deleted successfully:', result);
+  } catch (error) {
+    console.error('Error deleting file from Cloudinary:', error);
+    throw new Error('Error deleting file from Cloudinary');
+  }
+};
+
+// Function to extract public_id starting from "/excels/"
+const extractPublicId = (url) => {
+  // Find the index of "/profile_pictures/"
+  const startIndex = url.indexOf('/profile_pictures/');
+  
+  if (startIndex === -1) {
+    throw new Error('Public ID not found in URL');
+  }
+
+  // Adjust the start index to be right after "/profile_pictures/"
+  const start = startIndex + 1; 
+
+  // Find the end index (where the file extension starts)
+  const endIndex = url.lastIndexOf('.');
+  
+  if (endIndex === -1) {
+    throw new Error('File extension not found in URL');
+  }
+
+  // Extract the public ID
+  const publicId = url.substring(start, endIndex); 
+
+  return publicId;
+};
+
+const removeProfilePicture = async (req, res) => {
+  try {
+    const userId = req.user.id; // Assuming you're using a middleware that sets req.user
+    const user = await User.findById(userId);
+
+    // Delete the profile picture from Cloudinary if it exists
+    const publicId = extractPublicId(user.profilePicture);
+    console.log("profile picture public ID : " + publicId);
+
+    await deleteImageFromCloudinary(publicId);
+
+    // call function which will delete the image from cloudnary
+
+
+    res.status(200).json({ message: 'Profile picture removed successfully' });
+  } catch (error) {
+    console.error('Error removing profile picture:', error);
+    res.status(500).json({ message: 'Error removing profile picture' });
+  }
+};
+
 module.exports = {
   signin,
   signup,
   getUserProfile,
   signout,
   updateUserProfile,
-  updateUserProfilePicture
+  updateUserProfilePicture,
+  removeProfilePicture
 };
