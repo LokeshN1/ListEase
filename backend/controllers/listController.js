@@ -84,7 +84,7 @@ const createListFromExcelWithData = async (req, res) => {
   const access_key = uuidv4();
   const userId = req.user.id;
   const fileUrl = req.body.fileUrl; // Retrieve the file URL from the request body
-  const filePublicId = req.body.FilePublicId;
+  const filePublicId = req.body.public_id;
 
   if (!fileUrl) {
     return res.status(400).json({ message: 'File URL is not provided' });

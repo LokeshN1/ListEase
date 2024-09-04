@@ -45,7 +45,7 @@ const excelStorage = new CloudinaryStorage({
   params: {
     folder: 'excels', // Folder name in Cloudinary for storing Excel files
     format: async (req, file) => path.extname(file.originalname).substring(1), // Use the original file extension
-    FilePublicId: (req, file) => `${req.user.id}_excel_${Date.now()}`, // Set a unique file name
+    public_id: (req, file) => `${req.user.id}_excel_${Date.now()}`, // Set a unique file name
     resource_type: 'raw' // Set resource type to raw for non-media files
   },
 });
