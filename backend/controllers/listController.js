@@ -68,7 +68,7 @@ const publicId = extractPublicId(fileUrl);
     try {
       // Use the URL returned by the Cloudinary middleware
       const fileUrl = req.file.path;
-      const FilePublicId = extractPublicId(fileUrl);
+      // const FilePublicId = extractPublicId(fileUrl);
 
       console.log("fileUrl" + fileUrl);
       console.log("file public_id " + FilePublicId);
