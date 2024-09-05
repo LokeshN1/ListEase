@@ -11,6 +11,9 @@ router.post('/signout', signout);
 
 router.get('/profile', authenticateToken, getUserProfile);
 
+// update user details(dashboard)
+router.put('/account/profile', authenticateToken, updateUserProfile);
+
 // PUT /api/users/account/profile
 router.put('/account/profile/updateProfilePicture', authenticateToken, uploadProfilePicture.single('profilePicture'), updateUserProfilePicture);
 
