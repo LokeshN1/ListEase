@@ -34,7 +34,7 @@ function Navbar() {
           >
             <img
               src={user?.profilePicture
-                ? `${process.env.REACT_APP_BACKEND_URL}/${user.profilePicture}`
+                ? user.profilePicture
                 : `${process.env.REACT_APP_BACKEND_URL}/uploads/profile-pictures/default-profile.png`}
               alt="Profile"
               className="w-8 h-8 rounded-full object-cover"

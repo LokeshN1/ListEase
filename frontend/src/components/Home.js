@@ -31,7 +31,7 @@ function Home() {
   const handleSearch = async () => {
     if (listId.trim()) {
       try {
-        const response = await axios.get(`http://localhost:5000/api/lists/${listId}`, {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/lists/${listId}`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
