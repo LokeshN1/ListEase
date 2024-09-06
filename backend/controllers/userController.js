@@ -146,26 +146,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Check if the user wants to remove the profile picture
-    if (req.body.removeProfilePicture === 'true') {
-      // Delete old profile picture if it exists and is not a default image
-      if (user.profilePicture && user.profilePicture !== 'uploads/profile-pictures/default-profile.png') {
-        const oldProfilePicPath = path.join(__dirname, '..', 'uploads', 'profile-pictures', path.basename(user.profilePicture));
-        if (fs.existsSync(oldProfilePicPath)) {
-          fs.unlinkSync(oldProfilePicPath); // Delete the old file
-        }
-      }
-      user.profilePicture = ''; // Clear the profile picture field
-    } else if (req.file) {
-      // Handle file upload if a new picture is uploaded
-      if (user.profilePicture && user.profilePicture !== 'uploads/profile-pictures/default-profile.png') {
-        const oldProfilePicPath = path.join(__dirname, '..', 'uploads', 'profile-pictures', path.basename(user.profilePicture));
-        if (fs.existsSync(oldProfilePicPath)) {
-          fs.unlinkSync(oldProfilePicPath); // Delete the old file
-        }
-      }
-      user.profilePicture = req.file.path; // Update with the new file path
-    }
+    console.log("Details to be update "+req.body);
 
     // Update user fields from request body
     user.email = req.body.email || user.email;

@@ -100,7 +100,9 @@ function EditProfile() {
     if (formData.profilePicture instanceof File) {
       data.append('profilePicture', formData.profilePicture);
     }
-
+  
+    console.log('FormData before submit:', ...data); // Debugging
+  
     try {
       await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/users/account/profile`, data, {
         withCredentials: true,
@@ -116,6 +118,7 @@ function EditProfile() {
       setError('Failed to update profile');
     }
   };
+  
 
   const handleSaveProfilePicture = async () => {
     const data = new FormData();
