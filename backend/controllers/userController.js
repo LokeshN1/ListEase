@@ -146,7 +146,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    console.log("Details to be update "+req.body);
+    console.log("Details to be update: ", req.body);
 
     // Update user fields from request body
     user.email = req.body.email || user.email;
