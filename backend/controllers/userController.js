@@ -193,7 +193,7 @@ const updateUserProfilePicture = async (req, res) => {
       const previousImgUrl = user.profilePicture;
 
     console.log("Info about profile picture also its datatype"+ previousImgUrl+"\t"+typeof(previousImgUrl));
-    if(previousImgUrl != undefined){ // if their exist a profile picture 
+    if(previousImgUrl !== ""){ // if their exist a profile picture 
   // first delete the previous profile picture from cloudnary
       const publicId = extractPublicId(previousImgUrl);
       await deleteImageFromCloudinary(publicId);
