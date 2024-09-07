@@ -112,6 +112,16 @@ const signin = async (req, res) => {
   }
 };
 
+// Sign Out
+const signout = (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'None',
+  });
+  res.status(200).json({ message: 'Logged out successfully' });
+};
+
 
 // Get user details
 const getUserProfile = async (req, res) => {
@@ -124,13 +134,6 @@ const getUserProfile = async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 };
-
-const signout = async (req, res) =>{
-
-  res.clearCookie('token'); // Clear the token cookie
-  res.status(200).json({ message: 'Logged out successfully' });
-
-}
 
 
 // Update user profile
