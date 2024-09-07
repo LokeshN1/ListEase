@@ -87,29 +87,28 @@ function EditProfile() {
   };
 
   const handleSave = async () => {
-    const data = new FormData();
-    data.append('email', formData.email);
-    data.append('firstName', formData.firstName);
-    data.append('lastName', formData.lastName);
-    data.append('bio', formData.bio);
-    data.append('location', formData.location);
-    data.append('education', formData.education);
-    data.append('mobile', formData.mobile);
-    data.append('linkedInProfile', formData.linkedInProfile);
-    data.append('website', formData.website);
-    if (formData.profilePicture instanceof File) {
-      data.append('profilePicture', formData.profilePicture);
-    }
+    const data = {
+      email: formData.email,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      bio: formData.bio,
+      location: formData.location,
+      education: formData.education,
+      mobile: formData.mobile,
+      linkedInProfile: formData.linkedInProfile,
+      website: formData.website,
+    };
   
-    console.log('FormData before submit:', ...data); // Debugging
+    console.log('Data before submit:', data); // Debugging
   
     try {
       await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/users/account/profile`, data, {
         withCredentials: true,
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
         },
       });
+  
       setUserData({ ...userData, ...formData });
       setShowModal(false);
       navigate('/account/profile');
@@ -118,6 +117,7 @@ function EditProfile() {
       setError('Failed to update profile');
     }
   };
+  
   
 
   const handleSaveProfilePicture = async () => {
